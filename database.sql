@@ -1,4 +1,6 @@
--- Create database
+-- Create database (For local XAMPP setup)
+-- NOTE FOR CLOUD DEPLOYMENT (Render / Aiven / PlanetScale / Railway):
+-- If your provider forces a specific database name, comment out the CREATE DATABASE and USE lines below.
 CREATE DATABASE IF NOT EXISTS studentdb;
 USE studentdb;
 

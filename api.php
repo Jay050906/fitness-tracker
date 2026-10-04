@@ -2,11 +2,18 @@
 // Start session
 session_start();
 
-// DB constants
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'studentdb');
+// DB configuration (supports environment variables for Render / cloud deployment, with local XAMPP fallbacks)
+$dbHost = getenv('DB_HOST') ?: (isset($_ENV['DB_HOST']) ? $_ENV['DB_HOST'] : 'localhost');
+$dbPort = getenv('DB_PORT') ?: (isset($_ENV['DB_PORT']) ? $_ENV['DB_PORT'] : '3306');
+$dbUser = getenv('DB_USERNAME') ?: (getenv('DB_USER') ?: (isset($_ENV['DB_USERNAME']) ? $_ENV['DB_USERNAME'] : 'root'));
+$dbPass = getenv('DB_PASSWORD') !== false ? getenv('DB_PASSWORD') : (getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
+$dbName = getenv('DB_DATABASE') ?: (getenv('DB_NAME') ?: (isset($_ENV['DB_DATABASE']) ? $_ENV['DB_DATABASE'] : 'studentdb'));
+
+if (!defined('DB_HOST')) define('DB_HOST', $dbHost);
+if (!defined('DB_PORT')) define('DB_PORT', $dbPort);
+if (!defined('DB_USER')) define('DB_USER', $dbUser);
+if (!defined('DB_PASS')) define('DB_PASS', $dbPass);
+if (!defined('DB_NAME')) define('DB_NAME', $dbName);
 
 // Tracker class
 class FitnessTracker {
@@ -15,9 +22,13 @@ class FitnessTracker {
     // DB connect
     public function __construct() {
         try {
-            $this->db = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+            $this->db = new PDO($dsn, DB_USER, DB_PASS, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            ]);
         } catch (PDOException $e) {
+            error_log("Database Connection Error: " . $e->getMessage());
             echo json_encode(["status" => "error", "message" => "Connection failed"]);
             exit;
         }
