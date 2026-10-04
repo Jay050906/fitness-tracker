@@ -16,22 +16,28 @@ app.controller("TrackerController", function($scope, $http) {
     $scope.loadLogs = function() {
         $http.get("api.php?action=get_logs")
             .then(function(response) {
-                $scope.logs = response.data;
-                $scope.updateMetrics();
-                
-                // Render graph
-                setTimeout(function() {
-                    drawChart($scope.logs);
-                }, 100);
+                if (Array.isArray(response.data)) {
+                    $scope.logs = response.data;
+                    $scope.updateMetrics();
+                    
+                    // Render graph
+                    setTimeout(function() {
+                        drawChart($scope.logs);
+                    }, 100);
+                } else if (response.data && response.data.status === "error") {
+                    console.log("Database/API Error:", response.data.message);
+                    $scope.logs = [];
+                }
             })
             .catch(function(err) {
                 console.log("Error loading logs");
+                $scope.logs = [];
             });
     };
 
     // Update stats
     $scope.updateMetrics = function() {
-        if ($scope.logs.length === 0) return;
+        if (!Array.isArray($scope.logs) || $scope.logs.length === 0) return;
         var latest = $scope.logs[$scope.logs.length - 1];
         
         var w = parseFloat(latest.weight);
