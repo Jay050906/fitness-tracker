@@ -1,0 +1,38 @@
+/* Custom variables */
+:root {
+  --primary: #4f46e5;
+  --dark: #0f172a;
+  --bg: #f8fafc;
+}
+
+/* Base style */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg);
+  color: var(--dark);
+}
+
+/* Card animation */
+.card {
+  border: none;
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* SVG style */
+.logo-svg {
+  width: 40px;
+  height: 40px;
+}
+
+/* Canvas container */
+.chart-box {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+}

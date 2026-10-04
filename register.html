@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+    <!-- Header bar -->
+    <nav class="navbar navbar-dark bg-dark px-3">
+        <a class="navbar-brand" href="index.html">FitTrack</a>
+    </nav>
+
+    <!-- Form container -->
+    <main class="container my-5" style="max-width: 420px;">
+        <div class="card p-4 shadow-sm">
+            <h3 class="text-center mb-3">User Login</h3>
+            
+            <!-- Auth form -->
+            <form id="login-form" onsubmit="return validateAuth(event)">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" required oninput="saveDraft()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <div id="error-msg" class="text-danger small mb-3"></div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
